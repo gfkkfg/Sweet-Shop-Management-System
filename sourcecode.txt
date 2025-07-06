@@ -1,0 +1,2190 @@
+login.java
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.sql.*;
+
+class login extends JFrame implements ActionListener{
+    JLabel l1,l2,l3;
+    JTextField tf1,tf2;
+    JButton btn1,btn2;
+    String uname,pword;
+    login(){
+
+        Font ft = new Font("serif",Font.ITALIC,25);
+        this.getContentPane().setBackground(new Color(250, 170, 68));
+        l1 = new JLabel("Username");
+        l2 = new JLabel("Password");
+        l3 = new JLabel("GfK sweets");l3.setFont(ft);
+        tf1 = new JTextField();
+        tf2 = new JTextField();
+        btn1 = new JButton("Login");    btn2 = new JButton("Sign up");
+
+        l1.setBounds(50,50,150,30);l1.setForeground(new Color(0,0,0));
+        l2.setBounds(50,100,150,30);l2.setForeground(new Color(0,0,0));
+        l3.setBounds(100,8,200,40);l3.setForeground(new Color(8, 15, 174));
+        tf1.setBounds(150,50,150,25);
+        tf2.setBounds(150,100,150,25);
+        btn1.setBounds(50,150,100,30);btn1.setForeground(new Color(0,0,0));
+        btn2.setBounds(180,150,100,30);btn2.setForeground(new Color(0,0,0));
+        btn1.addActionListener(this);   btn2.addActionListener(this);
+        btn1.setBackground(new Color(5, 126, 7)); btn2.setBackground(new Color(211, 18, 6));
+
+        this.add(l1);this.add(l2);this.add(l3);this.add(tf1);this.add(tf2);this.add(btn1);this.add(btn2);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setTitle("Login Page");
+        this.setSize(350,250);
+        this.setLayout(null);
+        this.setLocationRelativeTo(null);
+    }
+    public void actionPerformed(ActionEvent ae){
+            try{
+                uname = tf1.getText();
+                pword = tf2.getText();
+                Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+                Connection con = DriverManager.getConnection("jdbc:ucanaccess://C://Users//ADMIN//Desktop//sweetshop//sssm.accdb");
+                PreparedStatement ps = con.prepareStatement("select * from account where uname = '" + uname + "' and pword = '" + pword + "'");
+                ResultSet rs = ps.executeQuery();
+                if(ae.getSource() == btn1){
+                    if(rs.next()){
+                        items itm = new items();
+                        itm.setVisible(true);
+                        this.dispose();
+                    }else if(uname.equals("admin") & pword.equals("admin")){
+                        items itm = new items();
+                        itm.pl3.add(itm.b2);
+                        itm.setVisible(true);
+                    } else{
+                        JOptionPane.showMessageDialog(null,"Invalie User :(","User",JOptionPane.WARNING_MESSAGE);
+                    }
+                }else if(ae.getSource() == btn2){
+                    signup sign = new signup();
+                    sign.setVisible(true);
+                    this.dispose();
+                }
+            }
+            catch (ClassNotFoundException cnfex){
+                System.out.println(cnfex);
+            }
+            catch(SQLException sqe){
+                System.out.println(sqe);
+            }
+    }
+}
+
+class log {
+    public static void main (String args []){
+        login logiin = new login();
+        logiin.setVisible(true);
+    }
+}
+
+
+singup.java
+
+
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import javax.swing.*;
+
+class signup extends JFrame implements ActionListener{
+    JLabel fname,lname,email,uname,mob,pass,cnfpass,spname;
+    JTextField fnametf,lnametf,emailtf,unametf,mobtf,passtf,cnfpasstf;
+    JButton btn1,btn2;
+    signup(){
+        
+        Font ft = new Font("serif",Font.ITALIC,25);
+        this.getContentPane().setBackground(new Color(0, 249, 242));
+
+        spname = new JLabel("GfK Sweets");spname.setFont(ft);
+        fname = new JLabel("First Name");   lname = new JLabel("Last Name");
+        email = new JLabel("Email");
+        uname = new JLabel("Username");
+        mob = new JLabel("Mobile");
+        pass = new JLabel("Password");      cnfpass = new JLabel("Confirm Password");
+
+        fnametf = new JTextField();         lnametf = new JTextField();
+        emailtf = new JTextField();
+        unametf = new JTextField();
+        mobtf = new JTextField();
+        passtf = new JTextField();          cnfpasstf = new JTextField();
+
+        btn1 = new JButton("Sign up");    btn2 = new JButton("Login");
+
+        spname.setBounds(130,18,200,30);spname.setForeground(new Color(255,0,0));
+        fname.setBounds(50,50,150,30);this.add(fname);       fnametf.setBounds(200,50,150,25);this.add(fnametf);
+        lname.setBounds(50,80,150,30);this.add(lname);      lnametf.setBounds(200,80,150,25);this.add(lnametf);
+        email.setBounds(50,110,150,30);this.add(email);     emailtf.setBounds(200,110,150,25);this.add(emailtf);
+        mob.setBounds(50,140,150,30);this.add(mob);         mobtf.setBounds(200,140,150,25);this.add(mobtf);
+        uname.setBounds(50,170,150,30);this.add(uname);     unametf.setBounds(200,170,150,25);this.add(unametf);
+        pass.setBounds(50,200,150,30);this.add(pass);       passtf.setBounds(200,200,150,25);this.add(passtf);
+        cnfpass.setBounds(50,230,150,30);this.add(cnfpass); cnfpasstf.setBounds(200,230,150,25);this.add(cnfpasstf);
+        btn1.setBounds(100,270,100,30);btn1.setForeground(new Color(0,0,0));
+        btn2.setBounds(220,270,100,30);btn2.setForeground(new Color(0,0,0));
+        btn1.addActionListener(this);   btn2.addActionListener(this);
+        btn1.setBackground(new Color(5, 126, 7)); btn2.setBackground(new Color(211, 18, 6));
+
+        this.add(spname);
+        this.add(btn1);this.add(btn2);
+        this.setTitle("Sign up");
+        this.setSize(450,350);
+        this.setLayout(null);
+        this.setLocationRelativeTo(null);
+    }
+    public void actionPerformed(ActionEvent ae){
+        String fname = fnametf.getText().toString();
+        String lname = lnametf.getText().toString();
+        String email = emailtf.getText().toString();
+        String uname =  unametf.getText().toString();  
+        String mob = mobtf.getText().toString();
+        String pword = passtf.getText().toString();
+
+        if(ae.getSource()==btn2){
+            login loggin = new login();
+            loggin.setVisible(true);
+            this.dispose();
+        }
+        else if(ae.getSource()==btn1){
+            try{
+                Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+                Connection con = DriverManager.getConnection("jdbc:ucanaccess://C://Users//ADMIN//Desktop//sweetshop//sssm.accdb");
+                PreparedStatement ps = con.prepareStatement("insert into account (fname , lname , email , mob , uname , pword) values (? , ? , ? , ? , ? , ?)");
+                ps.setString(1, fname);
+                ps.setString(2, lname);
+                ps.setString(3, email);
+                ps.setString(4, mob);
+                ps.setString(5, uname);
+                ps.setString(6, pword);
+
+                int ins = ps.executeUpdate();
+                if(ins>0)
+                    JOptionPane.showMessageDialog(null , "Successfully signuped","User",JOptionPane.INFORMATION_MESSAGE);
+                else
+                    JOptionPane.showMessageDialog(null , "Can't Sign up","User",JOptionPane.WARNING_MESSAGE);
+                    
+                con.commit();
+                con.close();
+                ps.close();
+            }
+            catch(Exception e){
+                System.out.println(e);
+            }
+        }
+    }
+}
+
+
+items.java
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+class items extends JFrame implements ItemListener,ActionListener{
+    JRadioButton ghrb,milkswt,dfswt,krpatti,casew;
+    JPanel pl1,pl2,pl3;
+    JButton b1,b2;
+    ButtonGroup bg;
+    ImageIcon ghee,milk,dryft,karupatti,cashew;
+    items(){
+
+        this.setTitle("Sweets");
+        ghee = new ImageIcon("ghee.jpeg");
+        Image im1 = ghee.getImage().getScaledInstance(130, 80, Image.SCALE_REPLICATE);
+        ImageIcon imic1 = new ImageIcon(im1);
+
+        milk = new ImageIcon("milk.jpeg");
+        Image im2 = milk.getImage().getScaledInstance(130, 80, Image.SCALE_REPLICATE);
+        ImageIcon imic2 = new ImageIcon(im2);
+
+        dryft = new ImageIcon("dryfruit.jpeg");
+        Image im3 = dryft.getImage().getScaledInstance(130, 80, Image.SCALE_REPLICATE);
+        ImageIcon imic3 = new ImageIcon(im3);
+
+        karupatti = new ImageIcon("karupatti.jpeg");
+        Image im4 = karupatti.getImage().getScaledInstance(130, 80, Image.SCALE_REPLICATE);
+        ImageIcon imic4 = new ImageIcon(im4);
+
+        cashew = new ImageIcon("cashew.jpeg");
+        Image im5 = cashew.getImage().getScaledInstance(130, 80, Image.SCALE_REPLICATE);
+        ImageIcon imic5 = new ImageIcon(im5);
+
+        bg = new ButtonGroup();
+        ghrb = new JRadioButton(imic1);ghrb.addItemListener(this);bg.add(ghrb);
+        milkswt = new JRadioButton(imic2);milkswt.addItemListener(this);bg.add(milkswt);
+        dfswt = new JRadioButton(imic3);dfswt.addItemListener(this);bg.add(dfswt);
+        krpatti = new JRadioButton(imic4);krpatti.addItemListener(this);bg.add(krpatti);
+        casew = new JRadioButton(imic5);casew.addItemListener(this);bg.add(casew);
+
+        pl1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        pl1.add(ghrb);pl1.add(milkswt);pl1.add(dfswt);pl1.add(krpatti);pl1.add(casew);pl1.setSize(740,100);
+        pl2 = new JPanel(new GridLayout(5,1,10,10));
+        pl2.setSize(500,500);
+        pl3 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        b1 = new JButton("Go to cart");b1.addActionListener(this);
+        pl3.setSize(700,50);pl3.add(b1);b1.setForeground(new Color(0,0,0));b1.setBackground(new Color(5, 126, 7));
+
+        b2 = new JButton("Account details");b2.addActionListener(this);
+        b2.setForeground(new Color(0,0,0));b2.setBackground(new Color(5, 5, 240));
+
+        this.getContentPane().setBackground(new Color(240,128,128));
+        pl1.setBackground(new Color(240, 128, 128));pl2.setBackground(new Color(240, 128, 128));pl3.setBackground(new Color(240, 128, 128));
+
+        pl1.setBounds(5,5,740,100);pl2.setBounds(5,105,740,530);pl3.setBounds(5,650,740,50);
+
+        this.add(pl1,BorderLayout.NORTH);this.add(pl2,BorderLayout.CENTER);this.add(pl3,BorderLayout.SOUTH);this.setSize(780,750);this.setLayout(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+    }
+    public void itemStateChanged(ItemEvent ie){
+        ghee ghswt = new ghee();    milk mkswt = new milk();    dfsweet dfswt1 = new dfsweet();
+        karupatti kp = new karupatti();     cashew csw = new cashew();
+
+        if(ghrb.isSelected()){
+            pl2.removeAll();
+            pl2.add(ghswt.mysurpa);pl2.add(ghswt.boondhiladdu);pl2.add(ghswt.athirasam);pl2.add(ghswt.badusha);
+            pl2.add(ghswt.modhiladdu);pl2.add(ghswt.chandrakala);pl2.add(ghswt.jangri);pl2.add(ghswt.wheathalwa);
+            pl2.add(ghswt.apsihalwa);pl2.add(ghswt.sonpapadi);
+            pl2.revalidate();
+            pl2.repaint();
+        }
+        else if(milkswt.isSelected()){              
+            pl2.removeAll();
+            pl2.add(mkswt.thiratipal);pl2.add(mkswt.milkpeda);pl2.add(mkswt.kesarpeda);pl2.add(mkswt.vanillaburfi);
+            pl2.add(mkswt.kesarburfi);pl2.add(mkswt.milkapple);pl2.add(mkswt.milktomato);
+            pl2.revalidate();
+            pl2.repaint();
+        }
+        else if(dfswt.isSelected()){
+            pl2.removeAll();
+            pl2.add(dfswt1.badamhalwa);pl2.add(dfswt1.bombayhalwa);pl2.add(dfswt1.apsihalwa);
+            pl2.revalidate();
+            pl2.repaint();
+        }
+        else if(krpatti.isSelected()){
+            pl2.removeAll();
+            pl2.add(kp.kpbadamhalwa);pl2.add(kp.kpkajukatli);
+            pl2.revalidate();
+            pl2.repaint();
+        }
+        else if(casew.isSelected()){
+            pl2.removeAll();
+            pl2.add(csw.kajukatli);pl2.add(csw.cashewbites);pl2.add(csw.cashewroll);pl2.add(csw.figkatli);
+            pl2.add(csw.cashewcrumble);
+            pl2.revalidate();
+            pl2.repaint();
+        }
+    }
+    public void actionPerformed(ActionEvent ae){
+        if(ae.getSource() == b1){
+            cart ct = new cart();
+            ct.setVisible(true);
+            this.dispose();
+        }
+        else if(ae.getSource() == b2){
+            account act = new account();
+            act.setVisible(true);
+        }
+    }
+}
+
+
+ghee.java
+
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class ghee extends JFrame implements ItemListener{
+    JRadioButton mysurpa,boondhiladdu,athirasam,badusha,modhiladdu,chandrakala,jangri,wheathalwa,apsihalwa,sonpapadi;
+    ImageIcon mysurpaic,boondhiladduic,athirasamic,badushaic,modhiladduic,chandrakalaic,jangriic,wheathalwaic,apsihalwaic,sonpapadiic;
+    ButtonGroup bg;
+    ghee(){
+        bg = new ButtonGroup();
+        mysurpaic = new ImageIcon("Mysurpak.jpeg");
+        Image im1 = mysurpaic.getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE);
+        ImageIcon imic1 = new ImageIcon(im1);
+
+        boondhiladduic = new ImageIcon("boondiladdu.jpeg");
+        Image im2 = boondhiladduic.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        ImageIcon imic2 = new ImageIcon(im2);
+
+        athirasamic = new ImageIcon("adhirasam.jpeg");
+        Image im3 = athirasamic.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        ImageIcon imic3 = new ImageIcon(im3);
+
+        badushaic = new ImageIcon("badusha.jpeg");
+        Image im4 = badushaic.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        ImageIcon imic4 = new ImageIcon(im4);
+
+        modhiladduic = new ImageIcon("modhiladdu.jpeg");
+        Image im5 = modhiladduic.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        ImageIcon imic5 = new ImageIcon(im5);
+
+        chandrakalaic = new ImageIcon("chandrakala.jpeg");
+        Image im6 = chandrakalaic.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        ImageIcon imic6 = new ImageIcon(im6);
+
+        jangriic = new ImageIcon("jangri.jpeg");
+        Image im7 = jangriic.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        ImageIcon imic7 = new ImageIcon(im7);
+
+        wheathalwaic = new ImageIcon("wheathalwa.jpeg");
+        Image im8 = wheathalwaic.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        ImageIcon imic8 = new ImageIcon(im8);
+
+        apsihalwaic = new ImageIcon("apsihalwa.jpeg");
+        Image im9 = apsihalwaic.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        ImageIcon imic9 = new ImageIcon(im9);
+
+        sonpapadiic = new ImageIcon("sonapapadi.jpeg");
+        Image im10 = sonpapadiic.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        ImageIcon imic10 = new ImageIcon(im10);
+
+        mysurpa = new JRadioButton("Mysur Pak");mysurpa.setIcon(imic1);mysurpa.addItemListener(this);mysurpa.setForeground(new Color(0,0,255));
+        boondhiladdu = new JRadioButton("Boondhi Laddu");boondhiladdu.setIcon(imic2);boondhiladdu.addItemListener(this);boondhiladdu.setForeground(new Color(0,0,255));
+        athirasam = new JRadioButton("Adhirasam");athirasam.setIcon(imic3);athirasam.addItemListener(this);athirasam.setForeground(new Color(0,0,255));
+        badusha = new JRadioButton("Badusha");badusha.setIcon(imic4);badusha.addItemListener(this);badusha.setForeground(new Color(0,0,255));
+        modhiladdu = new JRadioButton("Modhi Laddu");modhiladdu.setIcon(imic5);modhiladdu.addItemListener(this);modhiladdu.setForeground(new Color(0,0,255));
+        chandrakala = new JRadioButton("Chandrakala");chandrakala.setIcon(imic6);chandrakala.addItemListener(this);chandrakala.setForeground(new Color(0,0,255));
+        jangri = new JRadioButton("Jangri");jangri.setIcon(imic7);jangri.addItemListener(this);jangri.setForeground(new Color(0,0,255));
+        wheathalwa = new JRadioButton("Wheat Halwa");wheathalwa.setIcon(imic8);wheathalwa.addItemListener(this);wheathalwa.setForeground(new Color(0,0,255));
+        apsihalwa = new JRadioButton("Apsi Halwa");apsihalwa.setIcon(imic9);apsihalwa.addItemListener(this);apsihalwa.setForeground(new Color(0,0,255));
+        sonpapadi = new JRadioButton("Sonpapadi");sonpapadi.setIcon(imic10);sonpapadi.addItemListener(this);sonpapadi.setForeground(new Color(0,0,255));
+
+        bg.add(mysurpa);bg.add(boondhiladdu);bg.add(athirasam);bg.add(badusha);bg.add(modhiladdu);bg.add(chandrakala);
+        bg.add(jangri);bg.add(wheathalwa);bg.add(apsihalwa);bg.add(sonpapadi);
+
+    }
+    public void itemStateChanged(ItemEvent ie){
+        mysurpaf mysur = new mysurpaf();    boondhiladduf bladdu = new boondhiladduf();     athirasamf atrsm = new athirasamf();
+        badushaf bdsha = new badushaf();    modhiladduf mdladdu = new modhiladduf();    chandrakalaf cdrakala = new chandrakalaf();
+        jangrif jngri = new jangrif();      wheathalwaf whthalwa = new wheathalwaf();   apsihalwaf apshalwa = new apsihalwaf();
+        sonapapadif sonpapdi = new sonapapadif();
+
+        if(mysurpa.isSelected()){
+            mysur.setVisible(true);
+        }else if(boondhiladdu.isSelected()){
+            bladdu.setVisible(true);
+        }else if(athirasam.isSelected()){
+            atrsm.setVisible(true);
+        }else if(badusha.isSelected()){
+            bdsha.setVisible(true);
+        }else if(modhiladdu.isSelected()){
+            mdladdu.setVisible(true);
+        }else if(chandrakala.isSelected()){
+            cdrakala.setVisible(true);
+        }else if(jangri.isSelected()){
+            jngri.setVisible(true);
+        }else if(wheathalwa.isSelected()){
+            whthalwa.setVisible(true);
+        }else if(apsihalwa.isSelected()){
+            apshalwa.setVisible(true);
+        }else if(sonpapadi.isSelected()){
+            sonpapdi.setVisible(true);
+        }
+    }
+}
+
+
+
+class mysurpaf extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel pc1,pc2,g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    mysurpaf(){
+        this.setTitle("Mysur Pak");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");
+        wgt = new JLabel("PC / Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        pc1 = new JLabel("1PC - Rs.62/-");pl2.add(pc1);pc1.setBounds(10, 10, 100, 30);
+        pc2 = new JLabel("2PC - Rs.120/-");pl2.add(pc2);pc2.setBounds(10, 40, 100, 30);
+        g250 = new JLabel("250g - Rs.283/-");pl2.add(g250);g250.setBounds(10, 80, 100, 30);
+        g500 = new JLabel("500g - Rs.563/-");pl2.add(g500);g500.setBounds(10, 120, 100, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);save.addActionListener(this);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 1)                            
+            prc += qt * 62;
+        else if(wt == 2)
+            prc += qt * 120;
+        else if(wt == 250)
+            prc += qt * 283;
+        else if(wt == 500)
+            prc += qt * 563;  
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+
+class boondhiladduf extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel pc1,pc4,pc8,g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    boondhiladduf(){
+
+        this.setTitle("Boondhi Laddu");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("PC / Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        pc1 = new JLabel("1PC - Rs.60/-");pl2.add(pc1);pc1.setBounds(10, 10, 150, 30);
+        pc4 = new JLabel("4PC - Rs.214/-");pl2.add(pc4);pc4.setBounds(10, 40, 150, 30);
+        pc8 = new JLabel("8PC - Rs.434/-");pl2.add(pc8);pc8.setBounds(10, 80, 150, 30);
+        g250 = new JLabel("250g - Rs.281/-");pl2.add(g250);g250.setBounds(10, 120, 150, 30);
+        g500 = new JLabel("500g - Rs.563/-");pl2.add(g500);g500.setBounds(10, 160, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null);    
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 1)
+            prc += qt * 60;
+        else if(wt == 4)
+            prc += qt * 214;
+        else if(wt == 8)
+            prc += qt * 434;
+        else if(wt == 250)
+            prc += qt * 281;
+        else if(wt == 500)
+            prc += qt * 563;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+class athirasamf extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    athirasamf(){
+        this.setTitle("Athirasam");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("PC / Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        g250 = new JLabel("250g - Rs.207/-");pl2.add(g250);g250.setBounds(10, 10, 150, 30);
+        g500 = new JLabel("500kg - Rs.410/-");pl2.add(g500);g500.setBounds(10, 40, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 250)
+            prc += qt * 207;
+        else if(wt == 500)
+            prc += qt * 410;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+class badushaf extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel pc1,pc4,g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    badushaf(){
+        this.setTitle("Badusha");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("PC / Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        pc1 = new JLabel("1PC - Rs.55/-");pl2.add(pc1);pc1.setBounds(10, 10, 150, 30);
+        pc4 = new JLabel("4PC - Rs.228/-");pl2.add(pc4);pc4.setBounds(10, 40, 150, 30);
+        g250 = new JLabel("250g - Rs.265/-");pl2.add(g250);g250.setBounds(10, 80, 150, 30);
+        g500 = new JLabel("500g - Rs.530/-");pl2.add(g500);g500.setBounds(10, 120, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 1)
+            prc += qt * 55;
+        else if(wt == 4)
+            prc += qt * 228;
+        else if(wt == 250)
+            prc += qt * 265;
+        else if(wt == 500)
+            prc += qt * 530;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+} 
+class modhiladduf extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel pc1,pc4,pc8,g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    modhiladduf(){
+        this.setTitle("Modhi Laddu");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("PC / Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        pc1 = new JLabel("1PC - Rs.60/-");pl2.add(pc1);pc1.setBounds(10, 10, 150, 30);
+        pc4 = new JLabel("4PC - Rs.195/-");pl2.add(pc4);pc4.setBounds(10, 40, 150, 30);
+        pc8 = new JLabel("8PC - Rs.395/-");pl2.add(pc8);pc8.setBounds(10, 80, 150, 30);
+        g250 = new JLabel("250g - Rs.265/-");pl2.add(g250);g250.setBounds(10, 120, 150, 30);
+        g500 = new JLabel("500kg - Rs.530/-");pl2.add(g500);g500.setBounds(10, 160, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 1)
+            prc += qt * 60;
+        else if(wt == 4)
+            prc += qt * 195;
+        else if(wt == 8)
+            prc += qt * 395;
+        else if(wt == 250)
+            prc += qt * 265;
+        else if(wt == 500)
+            prc += qt * 530;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+class chandrakalaf extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    chandrakalaf(){
+        this.setTitle("Chandrakala");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        g250 = new JLabel("250g - Rs.265/-");pl2.add(g250);g250.setBounds(10, 1, 150, 30);
+        g500 = new JLabel("500kg - Rs.530/-");pl2.add(g500);g500.setBounds(10, 40, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 250)
+            prc += qt * 265;
+        else if(wt == 500)
+            prc += qt * 530;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+class jangrif extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    jangrif(){
+        this.setTitle("Jangri");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        g250 = new JLabel("250g - Rs.265/-");pl2.add(g250);g250.setBounds(10, 1, 150, 30);
+        g500 = new JLabel("500kg - Rs.530/-");pl2.add(g500);g500.setBounds(10, 40, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 250)
+            prc += qt * 265;
+        else if(wt == 500)
+            prc += qt * 530;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+class wheathalwaf extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel g300,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    int price = 0;
+    wheathalwaf(){
+        this.setTitle("Wheat Halwa");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        g300 = new JLabel("300g - Rs.350/-");pl2.add(g300);g300.setBounds(10, 10, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 300)
+            prc += qt * 350;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+class apsihalwaf extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    int price = 0;
+    apsihalwaf(){
+        this.setTitle("Apsi Halwa");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        g250 = new JLabel("250g - Rs.350/-");pl2.add(g250);g250.setBounds(10, 1, 150, 30);
+        g500 = new JLabel("500kg - Rs.700/-");pl2.add(g500);g500.setBounds(10, 40, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 250)
+            prc += qt * 350;
+        else if(wt == 500)
+            prc += qt * 700;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+class sonapapadif extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    int price = 0;
+    sonapapadif(){
+        this.setTitle("Sonpapadi");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        g250 = new JLabel("250g - Rs.265/-");pl2.add(g250);g250.setBounds(10, 1, 150, 30);
+        g500 = new JLabel("500kg - Rs.530/-");pl2.add(g500);g500.setBounds(10, 40, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 250)
+            prc += qt * 265;
+        else if(wt == 500)
+            prc += qt * 530;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+
+
+milk.java
+
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class milk extends JFrame implements ItemListener{
+    JRadioButton thiratipal,milkpeda,kesarpeda,vanillaburfi,kesarburfi,milkapple,milktomato;
+    ImageIcon thiratipalic,milkpedaic,kesarpedaic,vanillaburfiic,kesarburfiic,milkappleic,milktomatoic;
+    ButtonGroup bg;
+    milk(){
+        bg = new ButtonGroup();
+        ImageIcon thiratipalic = new ImageIcon("theratipal.jpeg");
+        Image im1 = thiratipalic.getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE);
+        ImageIcon imic1 = new ImageIcon(im1);
+
+        ImageIcon milkpedaic = new ImageIcon("milkpeda.jpeg");
+        Image im2 = milkpedaic.getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE);
+        ImageIcon imic2 = new ImageIcon(im2);
+
+        ImageIcon kesarpedaic = new ImageIcon("kesarpeda.jpeg");
+        Image im3 = kesarpedaic.getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE);
+        ImageIcon imic3 = new ImageIcon(im3);
+
+        ImageIcon vanillaburfiic = new ImageIcon("vanilaburfi.jpeg");
+        Image im4 = vanillaburfiic.getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE);
+        ImageIcon imic4 = new ImageIcon(im4);
+
+        ImageIcon kesarburfiic = new ImageIcon("kesarburfi.jpeg");
+        Image im5 = kesarburfiic.getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE);
+        ImageIcon imic5 = new ImageIcon(im5);
+
+        ImageIcon milkappleic = new ImageIcon("milkapple.jpeg");
+        Image im6 = milkappleic.getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE);
+        ImageIcon imic6 = new ImageIcon(im6);
+
+        ImageIcon milktomatoic = new ImageIcon("milktomato.jpeg");
+        Image im7 = milktomatoic.getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE);
+        ImageIcon imic7 = new ImageIcon(im7);
+
+        thiratipal = new JRadioButton("Thiratipal");thiratipal.setIcon(imic1);thiratipal.addItemListener(this);thiratipal.setForeground(new Color(0,0,255));
+        milkpeda = new JRadioButton("Milk Peda");milkpeda.setIcon(imic2);milkpeda.addItemListener(this);milkpeda.setForeground(new Color(0,0,255));
+        kesarpeda = new JRadioButton("Kesar Peda");kesarpeda.setIcon(imic3);kesarpeda.addItemListener(this);kesarpeda.setForeground(new Color(0,0,255));
+        vanillaburfi = new JRadioButton("Vanilla Burfi");vanillaburfi.setIcon(imic4);vanillaburfi.addItemListener(this);vanillaburfi.setForeground(new Color(0,0,255));
+        kesarburfi = new JRadioButton("Kesar Burfi");kesarburfi.setIcon(imic5);kesarburfi.addItemListener(this);kesarburfi.setForeground(new Color(0,0,255));
+        milkapple = new JRadioButton("Milk Apple");milkapple.setIcon(imic6);milkapple.addItemListener(this);milkapple.setForeground(new Color(0,0,255));
+        milktomato = new JRadioButton("Milk Tomato");milktomato.setIcon(imic7);milktomato.addItemListener(this);milktomato.setForeground(new Color(0,0,255));
+
+        bg.add(thiratipal);bg.add(milkpeda);bg.add(kesarpeda);bg.add(vanillaburfi);bg.add(kesarburfi);
+        bg.add(milkapple);bg.add(milktomato);
+    }    
+    public void itemStateChanged(ItemEvent ie){
+        thiratipalf thrtipal = new thiratipalf();   milkpedaf mkpeda = new milkpedaf();     kesarpedaf ksrpeda = new kesarpedaf();
+        vanillaburfif vnlburfi = new vanillaburfif();   kesarburfif ksrburfi = new kesarburfif(); milkapplef mkapple = new milkapplef();
+        milktomatof mktomato = new milktomatof();
+
+        if(thiratipal.isSelected()){
+            thrtipal.setVisible(true);
+        }else if(milkpeda.isSelected()){
+            mkpeda.setVisible(true);
+        }else if(kesarpeda.isSelected()){
+            ksrpeda.setVisible(true);
+        }else if(vanillaburfi.isSelected()){
+            vnlburfi.setVisible(true);
+        }else if(kesarburfi.isSelected()){
+            ksrburfi.setVisible(true);
+        }else if(milkapple.isSelected()){
+            mkapple.setVisible(true);
+        }else if(milktomato.isSelected()){
+            mktomato.setVisible(true);
+        }
+    }
+}
+class thiratipalf extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel g300,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    thiratipalf(){
+        this.setTitle("Thiratipal");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        g300 = new JLabel("300g - Rs.350/-");pl2.add(g300);g300.setBounds(10, 10, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 300)
+            prc += qt * 350;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+class milkpedaf extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel pc8,g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    milkpedaf(){
+        this.setTitle("Milk Peda");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("PC / Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        pc8 = new JLabel("8PC - Rs.393/-");pl2.add(pc8);pc8.setBounds(10, 10, 150, 30);
+        g250 = new JLabel("250g - Rs.265/-");pl2.add(g250);g250.setBounds(10, 40, 150, 30);
+        g500 = new JLabel("500g - Rs.530/-");pl2.add(g500);g500.setBounds(10, 80, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+                
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null);    
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 8)
+            prc += qt * 393;
+        else if(wt == 250)
+            prc += qt * 265;
+        else if(wt == 500)
+            prc += qt * 530;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+class kesarpedaf extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel pc8,g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    kesarpedaf(){
+        this.setTitle("Kesar Peda");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("PC / Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        pc8 = new JLabel("8PC - Rs.390/-");pl2.add(pc8);pc8.setBounds(10, 10, 150, 30);
+        g250 = new JLabel("250g - Rs.265/-");pl2.add(g250);g250.setBounds(10, 40, 150, 30);
+        g500 = new JLabel("500g - Rs.530/-");pl2.add(g500);g500.setBounds(10, 80, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 8)
+            prc += qt * 390;
+        else if(wt == 250)
+            prc += qt * 265;
+        else if(wt == 500)
+            prc += qt * 530;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+} 
+class vanillaburfif extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    vanillaburfif(){
+        this.setTitle("Vanilla Burfi");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("PC / Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        g250 = new JLabel("250g - Rs.265/-");pl2.add(g250);g250.setBounds(10, 10, 150, 30);
+        g500 = new JLabel("500g - Rs.530/-");pl2.add(g500);g500.setBounds(10, 40, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 250)
+            prc += qt * 265;
+        else if(wt == 500)
+            prc += qt * 530;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+class kesarburfif extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    kesarburfif(){
+        this.setTitle("Kesar Burfi");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("PC / Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        g250 = new JLabel("250g - Rs.265/-");pl2.add(g250);g250.setBounds(10, 10, 150, 30);
+        g500 = new JLabel("500g - Rs.530/-");pl2.add(g500);g500.setBounds(10, 40, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 250)
+            prc += qt * 265;
+        else if(wt == 500)
+            prc += qt * 530;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+} 
+class milkapplef extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    milkapplef(){
+        this.setTitle("Milk Apple");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("PC / Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        g250 = new JLabel("250g - Rs.265/-");pl2.add(g250);g250.setBounds(10, 10, 150, 30);
+        g500 = new JLabel("500g - Rs.530/-");pl2.add(g500);g500.setBounds(10, 40, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 250)
+            prc += qt * 265;
+        else if(wt == 500)
+            prc += qt * 530;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+class milktomatof extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    milktomatof(){
+        this.setTitle("Milk Tomato");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("PC / Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        g250 = new JLabel("250g - Rs.265/-");pl2.add(g250);g250.setBounds(10, 10, 150, 30);
+        g500 = new JLabel("500g - Rs.530/-");pl2.add(g500);g500.setBounds(10, 40, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+        
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 250)
+            prc += qt * 265;
+        else if(wt == 500)
+            prc += qt * 530;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+
+
+dfsweet.java
+
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class dfsweet extends JFrame implements ItemListener{
+    JRadioButton badamhalwa,bombayhalwa,apsihalwa;
+    ImageIcon badamhalwaic,bombayhalwaic,apsihalwaic;
+    ButtonGroup bg;
+    dfsweet(){
+        bg = new ButtonGroup();
+        badamhalwaic = new ImageIcon("badamhalwa.jpeg");
+        Image im1 = badamhalwaic.getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE);
+        ImageIcon imic1 = new ImageIcon(im1);
+
+        bombayhalwaic = new ImageIcon("bombayhalwa.jpeg");
+        Image im2 = bombayhalwaic.getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE);
+        ImageIcon imic2 = new ImageIcon(im2);
+
+        apsihalwaic = new ImageIcon("apsihalwa.jpeg");
+        Image im3 = apsihalwaic.getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE);
+        ImageIcon imic3 = new ImageIcon(im3);
+
+        badamhalwa = new JRadioButton("Badam Halwa");badamhalwa.setIcon(imic1);badamhalwa.addItemListener(this);badamhalwa.setForeground(new Color(0,0,255));
+        bombayhalwa = new JRadioButton("Bombay Halwa");bombayhalwa.setIcon(imic2);bombayhalwa.addItemListener(this);bombayhalwa.setForeground(new Color(0,0,255));
+        apsihalwa = new JRadioButton("Apsi Halwa");apsihalwa.setIcon(imic3);apsihalwa.addItemListener(this);apsihalwa.setForeground(new Color(0,0,255));
+        
+        bg.add(badamhalwa);bg.add(bombayhalwa);bg.add(apsihalwa);
+    }
+    public void itemStateChanged(ItemEvent ie){
+        badamhalwaf bdmhalwa = new badamhalwaf();   bombayhalwaf bmbayhlwa = new bombayhalwaf();
+        apsihalwaaf apshlwa = new apsihalwaaf();  
+
+        if(badamhalwa.isSelected()){
+            bdmhalwa.setVisible(true);
+        }else if(bombayhalwa.isSelected()){
+            bmbayhlwa.setVisible(true);
+        }else if(apsihalwa.isSelected()){
+            apshlwa.setVisible(true);
+        }
+    }
+}
+class badamhalwaf extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    badamhalwaf(){
+        this.setTitle("Badam Halwa");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        g500 = new JLabel("500kg - Rs.550/-");pl2.add(g500);g500.setBounds(10, 10, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 500)
+            prc += qt * 550;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+class bombayhalwaf extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    bombayhalwaf(){
+        this.setTitle("Bombay Halwa");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        g250 = new JLabel("250g - Rs.265/-");pl2.add(g250);g250.setBounds(10, 10, 150, 30);
+        g500 = new JLabel("500kg - Rs.530/-");pl2.add(g500);g500.setBounds(10, 40, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 250)
+            prc += qt * 265;
+        else if(wt == 500)
+            prc += qt * 530;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+class apsihalwaaf extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    apsihalwaaf(){
+        this.setTitle("Apsi Halwa");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        g250 = new JLabel("250g - Rs.350/-");pl2.add(g250);g250.setBounds(10, 10, 150, 30);
+        g500 = new JLabel("500kg - Rs.700/-");pl2.add(g500);g500.setBounds(10, 40, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+        
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 250)
+            prc += qt * 350;
+        else if(wt == 500)
+            prc += qt * 700;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+
+
+karupatti.java
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class karupatti extends JFrame implements ItemListener{
+    JRadioButton kpbadamhalwa,kpkajukatli;
+    ImageIcon kpbadamhalwaic,kpkajukatliic;
+    ButtonGroup bg;
+    karupatti(){
+        bg = new ButtonGroup();
+        kpbadamhalwaic = new ImageIcon("karupattibadamhalwa.jpeg");
+        Image im1 = kpbadamhalwaic.getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE);
+        ImageIcon imic1 = new ImageIcon(im1);
+
+        kpkajukatliic = new ImageIcon("karupattikajukatli.jpeg");
+        Image im2 = kpkajukatliic.getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE);
+        ImageIcon imic2 = new ImageIcon(im2);
+
+        kpbadamhalwa = new JRadioButton("Karupatti Badam Hawla");kpbadamhalwa.setIcon(imic1);kpbadamhalwa.addItemListener(this);kpbadamhalwa.setForeground(new Color(0,0,255));
+        kpkajukatli = new JRadioButton("Karupatti Kaju Katli");kpkajukatli.setIcon(imic2);kpkajukatli.addItemListener(this);kpkajukatli.setForeground(new Color(0,0,255));
+        
+        bg.add(kpbadamhalwa);bg.add(kpkajukatli);
+    }    
+    public void itemStateChanged(ItemEvent ie){
+        kpbadamhalwaf kpbdmhalwa = new kpbadamhalwaf();     kpkajukatlif kpkajkatli = new kpkajukatlif();
+
+        if(kpbadamhalwa.isSelected()){
+            kpbdmhalwa.setVisible(true);
+        }else if(kpkajukatli.isSelected()){
+            kpkajkatli.setVisible(true);
+        }
+    }
+}
+class kpbadamhalwaf extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel g200,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    kpbadamhalwaf(){
+        this.setTitle("Karupatti Badam Halwa");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        g200 = new JLabel("200g - Rs.539/-");pl2.add(g200);g200.setBounds(10, 10, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 200)
+            prc += qt * 539;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+class kpkajukatlif extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel pc1,pc9,pc18,g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    kpkajukatlif(){
+        this.setTitle("Karupatti kaju katli");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("PC / Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        pc1 = new JLabel("1PC - Rs.65/-");pl2.add(pc1);pc1.setBounds(10, 10, 150, 30);
+        pc9 = new JLabel("9PC - Rs.440/-");pl2.add(pc9);pc9.setBounds(10, 40, 150, 30);
+        pc18 = new JLabel("18PC - Rs.867/-");pl2.add(pc18);pc18.setBounds(10, 70, 150, 30);
+        g250 = new JLabel("250g - Rs.699/-");pl2.add(g250);g250.setBounds(10, 100, 150, 30);
+        g500 = new JLabel("500g - Rs.1399/-");pl2.add(g500);g500.setBounds(10, 130, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+        
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);pl2.setBackground(Color.GRAY);
+        this.setSize(400,250);this.setLayout(null);    
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 1)
+            prc = qt * 65;
+        else if(wt == 9)
+            prc = qt * 440;
+        else if(wt == 18)
+            prc = qt * 867;
+        else if(wt == 250)
+            prc = qt * 699;
+        else if(wt == 500)
+            prc = qt * 1399;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+
+
+cashew.java
+
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class cashew extends JFrame implements ItemListener{
+    JRadioButton kajukatli,cashewbites,cashewroll,figkatli,cashewcrumble;
+    ImageIcon kajukatliic,cashebitesic,cashewrollic,figkatliic,cashewcrumpleic;
+    ButtonGroup bg;
+    cashew(){
+        bg = new ButtonGroup();
+        kajukatliic = new ImageIcon("kajukatli.jpeg");
+        Image im1 = kajukatliic.getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE);
+        ImageIcon imic1 = new ImageIcon(im1);
+
+        cashebitesic = new ImageIcon("cashewbites.jpeg");
+        Image im2 = cashebitesic.getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE);
+        ImageIcon imic2 = new ImageIcon(im2);
+
+        cashewrollic = new ImageIcon("cashewroll.jpeg");
+        Image im3 = cashewrollic.getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE);
+        ImageIcon imic3 = new ImageIcon(im3);
+
+        figkatliic = new ImageIcon("figkatli.jpeg");
+        Image im4 = figkatliic.getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE);
+        ImageIcon imic4 = new ImageIcon(im4);
+
+        cashewcrumpleic = new ImageIcon("cashewcrumble.jpeg");
+        Image im5 = cashewcrumpleic.getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE);
+        ImageIcon imic5 = new ImageIcon(im5);
+
+        kajukatli = new JRadioButton("Kaju Katli");kajukatli.setIcon(imic1);kajukatli.addItemListener(this);kajukatli.setForeground(new Color(0,0,255));
+        cashewbites = new JRadioButton("Cashew Bites");cashewbites.setIcon(imic2);cashewbites.addItemListener(this);cashewbites.setForeground(new Color(0,0,255));
+        cashewroll = new JRadioButton("Cashew Roll");cashewroll.setIcon(imic3);cashewroll.addItemListener(this);cashewroll.setForeground(new Color(0,0,255));
+        figkatli = new JRadioButton("Fig Katli");figkatli.setIcon(imic4);figkatli.addItemListener(this);figkatli.setForeground(new Color(0,0,255));
+        cashewcrumble = new JRadioButton("Cashew Crumple");cashewcrumble.setIcon(imic5);cashewcrumble.addItemListener(this);cashewcrumble.setForeground(new Color(0,0,255));
+
+        bg.add(kajukatli);bg.add(cashewbites);bg.add(cashewroll);bg.add(figkatli);bg.add(cashewcrumble);
+    }
+    public void itemStateChanged(ItemEvent ie){
+        kajukatlif kajktli = new kajukatlif();      cashewbitesf cswbites = new cashewbitesf();     cashewrollf cswroll = new cashewrollf();
+        figkatlif figktli = new figkatlif();        cashewcrumblef cswcrumble = new cashewcrumblef();
+        
+        if(kajukatli.isSelected()){
+            kajktli.setVisible(true);
+        }else if(cashewbites.isSelected()){
+            cswbites.setVisible(true);
+        }else if(cashewroll.isSelected()){
+            cswroll.setVisible(true);
+        }else if(figkatli.isSelected()){
+            figktli.setVisible(true);
+        }else if(cashewcrumble.isSelected()){
+            cswcrumble.setVisible(true);
+        }
+
+    }
+}
+
+class kajukatlif extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel pc1,pc9,pc18,pc36,g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    kajukatlif(){
+        this.setTitle("Kajukatli");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        pc1 = new JLabel("1PC - Rs.50/-");pl2.add(pc1);pc1.setBounds(10,10,150,30);
+        pc9 = new JLabel("9PC - Rs.283/-");pl2.add(pc9);pc9.setBounds(10, 40, 150, 30);
+        pc18 = new JLabel("18PC - Rs.545/-");pl2.add(pc18);pc18.setBounds(10, 70, 150, 30);
+        pc36 = new JLabel("36PC - Rs.1084/-");pl2.add(pc36);pc36.setBounds(10, 100, 150, 30);
+        g250 = new JLabel("250g - Rs.438/-");pl2.add(g250);g250.setBounds(10, 130, 150, 30);
+        g500 = new JLabel("500g - Rs.877/-");pl2.add(g500);g500.setBounds(10, 160, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 1)
+            prc += qt * 50;
+        else if(wt == 9)
+            prc += qt * 283;
+        else if(wt == 18)
+            prc += qt * 545;
+        else if(wt == 36)
+            prc += qt * 1084;
+        else if(wt == 250)
+            prc += qt * 438;
+        else if(wt == 500)
+            prc += qt * 877;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+
+class cashewbitesf extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel pc4,pc9,pc20,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    cashewbitesf(){
+        this.setTitle("cashewbites");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        pc4 = new JLabel("1PC - Rs.207/-");pl2.add(pc4);pc4.setBounds(10,10,150,30);
+        pc9 = new JLabel("9PC - Rs.489/-");pl2.add(pc9);pc9.setBounds(10, 40, 150, 30);
+        pc20 = new JLabel("18PC - Rs.1053/-");pl2.add(pc20);pc20.setBounds(10, 70, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 4)
+            prc += qt * 207;
+        else if(wt == 9)
+            prc += qt * 489;
+        else if(wt ==20)
+            prc += qt * 1053;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+
+class cashewrollf extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel g250,g500,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    cashewrollf(){
+        this.setTitle("Cashew Roll");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        g250 = new JLabel("250g - Rs.496/-");pl2.add(g250);g250.setBounds(10, 10, 150, 30);
+        g500 = new JLabel("500g - Rs.992/-");pl2.add(g500);g500.setBounds(10, 40, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 250)
+            prc += qt * 496;
+        else if(wt == 500)
+            prc += qt * 992;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+
+class figkatlif extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel pc1,pc9,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    figkatlif(){
+        this.setTitle("Figkatli");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        pc1 = new JLabel("1PC - Rs.47/-");pl2.add(pc1);pc1.setBounds(10,10,150,30);
+        pc9 = new JLabel("9PC - Rs.375/-");pl2.add(pc9);pc9.setBounds(10, 40, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 1)
+            prc += qt * 47;
+        else if(wt == 9)
+            prc += qt * 375;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+
+class cashewcrumblef extends JFrame implements ActionListener{
+    JPanel pl1,pl2;
+    JLabel pc9,wgt,quantity;
+    JTextField weight,quantity1;
+    JButton save;
+    cashewcrumblef(){
+        this.setTitle("Cashew Crumble");
+        pl1 = new JPanel();
+        pl2 = new JPanel();
+        save = new JButton("Add to Cart");save.addActionListener(this);
+        wgt = new JLabel("Weight");
+        quantity = new JLabel("Quantity");
+
+        weight = new JTextField();
+        quantity1 = new JTextField();
+
+        pc9 = new JLabel("9PC - Rs.480/-");pl2.add(pc9);pc9.setBounds(10, 40, 150, 30);
+
+        wgt.setBounds(20,20,80,30);weight.setBounds(100, 20, 80, 30);pl1.add(wgt);pl1.add(weight);
+        quantity.setBounds(20,70,80,30);quantity1.setBounds(100,70,80,30);pl1.add(quantity);pl1.add(quantity1);
+        save.setBounds(50,130,100,30);pl1.add(save);
+
+        pl1.setBounds(0, 0, 200, 400);pl2.setBounds(200,0,200,400);pl2.setLayout(null);
+
+        pl1.setBackground(new Color(32, 178, 170));
+        pl2.setBackground(new Color(32, 178, 170));
+        save.setBackground(new Color(255, 87, 51));save.setForeground(new Color(0,0,0));
+
+        pl1.setLayout(null);this.add(pl1);this.add(pl2);pl1.setSize(200,300);pl2.setSize(200,300);
+        this.setSize(400,250);this.setLayout(null); 
+    }
+    public void actionPerformed(ActionEvent ae){
+        int wt = Integer.parseInt(weight.getText());
+        int qt = Integer.parseInt(quantity1.getText());
+        String swt = this.getTitle();
+        int prc = 0;
+        if(wt == 9)
+            prc += qt * 480;
+        total ghtot = new total(wt,qt,prc,swt);
+    }
+}
+
+
+total.java
+
+
+import java.sql.*;
+import javax.swing.*;
+
+class total{
+    String wgt,qty,prc,swt;
+    total(int wgtt,int qtyy,int prcc,String swtt){
+        wgt = String.valueOf(wgtt);
+        qty = String.valueOf(qtyy);
+        prc = String.valueOf(prcc);
+        swt = swtt;
+
+        try{
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            Connection con = DriverManager.getConnection("jdbc:ucanaccess://C://Users//ADMIN//Desktop//sweetshop//sssm.accdb");
+            PreparedStatement ps = con.prepareStatement("insert into total (sweet, weight, quantity, price) values (? , ? , ? , ? )");
+            ps.setString(1, swt);
+            ps.setString(2, wgt);
+            ps.setString(3, qty);   
+            ps.setString(4, prc);
+
+            int in = ps.executeUpdate();
+            if (in>0)
+                JOptionPane.showMessageDialog(null , "Added");
+            con.commit();
+            con.close();
+            ps.close();
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+    }
+}
+
+
+cart.java
+
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+
+public class cart extends JFrame implements ActionListener{
+    JLabel l1;
+    JTextArea ta1;
+    JButton b1,b2,back;
+    JTextField tf1;
+    int tot = 0;
+    String sweet,weight,quantity,price,email;
+    cart(){
+        
+        this.setTitle("Cart");
+        this.setSize(700,700);
+        this.setLayout(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        Font ft = new Font("serif",Font.ITALIC,12); Font ft1 = new Font("Algerian",Font.ITALIC,25);
+        this.getContentPane().setBackground(new Color(0, 250, 154));
+
+        l1 = new JLabel("CART");l1.setFont(ft1);this.add(l1);l1.setForeground(new Color(75, 0, 130));l1.setBounds(250,15,300,30);
+
+        ta1 = new JTextArea(50,50);ta1.setFont(ft);ta1.setBounds(50,50,600,400);
+        this.add(ta1);
+
+        b1 = new JButton("Find Total");b1.addActionListener(this);b1.setBackground(new Color(255,102,178));b1.setForeground(new Color(102,0,204));
+        b1.setBounds(50,470,100,30);this.add(b1);
+
+        tf1 = new JTextField();tf1.setBounds(170,470,100,30);this.add(tf1);
+
+        b2 = new JButton("Go to Payment");b2.addActionListener(this); b2.setBackground(new Color(5, 126, 7));b2.setForeground(new Color(0,0,0));
+        b2.setBounds(50,520,180,30);this.add(b2);
+        back = new JButton("Previous");back.addActionListener(this);back.setBackground(new Color(211, 18, 6));this.add(back);
+        back.setBounds(250,520,100,30);back.setForeground(new Color(0,0,0));
+
+        try{
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            Connection con = DriverManager.getConnection("jdbc:ucanaccess://C://Users//ADMIN//Desktop//sweetshop//sssm.accdb");
+            PreparedStatement ps = con.prepareStatement("select * from total");
+            ResultSet rs = ps.executeQuery();
+            ta1.append("Sweet name" + "\t" + "Weight" + "\t" + "Quantity" + "\t" + "Price\n");
+            while (rs.next()){
+                sweet = rs.getString(1);weight = rs.getString(2);quantity = rs.getString(3);price = rs.getString(4);
+                ta1.append(sweet + "\t" + weight + "\t" + quantity + "\t" + price + "\n");
+                tot += Integer.parseInt(price);
+            }
+        }
+        catch (ClassNotFoundException cnfex){
+            System.out.println(cnfex);
+        }
+        catch(SQLException sqe){
+            System.out.println(sqe);
+        }
+        this.setLocationRelativeTo(null);
+    }
+    public void actionPerformed(ActionEvent ae){
+        if(ae.getSource() == b1){
+            tf1.setText("Rs." + String.valueOf(tot));
+        }else if(ae.getSource() == b2){
+            payment pymt = new payment();
+            pymt.setVisible(true);
+            this.dispose();
+        }else if(ae.getSource() == back){
+            items itm = new items();
+            itm.setVisible(true);
+            this.dispose();
+        }
+    }
+}
+class ct{
+    public static void main(String[] args) {
+        new cart();
+    }
+}
+
+
+payment.java
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+class payment extends JFrame implements ItemListener,ActionListener{
+    JLabel l1,l2,l3,l4,l5,l6,l7,l8,l9;
+    JRadioButton rb1,rb2,rb3,rb4,rb5;
+    ButtonGroup bg;
+    JButton b1,back;
+    String total;
+    ImageIcon ic;
+    JTextField tf1,tf2;
+    payment(){
+
+        this.setTitle("Payment");
+        this.setLayout(null);
+        this.setSize(600,600);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        Font ft = new Font("Algerian",Font.ITALIC,25);
+        bg = new ButtonGroup();
+
+        cart ct = new cart();
+        total = String.valueOf(ct.tot);
+        this.getContentPane().setBackground(new Color(221, 139, 5));
+
+        l1 = new JLabel("Payment Processing ...!");l1.setFont(ft);this.add(l1);l1.setForeground(new Color(75, 0, 130));
+        l2 = new JLabel("Select payment method : ");this.add(l2);
+        l3 = new JLabel("Rs." + total);this.add(l3);
+
+        rb1 = new JRadioButton("Cash");bg.add(rb1);this.add(rb1);rb1.addItemListener(this);//rb1.setSelected(true);
+        rb2 = new JRadioButton("Debit Card");bg.add(rb2);this.add(rb2);rb2.addItemListener(this);
+        rb3 = new JRadioButton("Credit Card");bg.add(rb3);this.add(rb3);rb3.addItemListener(this);
+        rb4 = new JRadioButton("Net Banking");bg.add(rb4);this.add(rb4);rb4.addItemListener(this);
+        rb5 = new JRadioButton("UPI");bg.add(rb5);this.add(rb5);rb5.addItemListener(this);
+
+        b1 = new JButton("Click to Pay");b1.addActionListener(this);this.add(b1);
+
+        tf1 = new JTextField(); this.add(tf1); tf2 = new JTextField(); this.add(tf2);
+        l4 = new JLabel("Last 6 digit Number"); this.add(l4); 
+        l5 = new JLabel("CVV"); this.add(l5);
+        l6 = new JLabel("Username"); this.add(l6); 
+        l7 = new JLabel("Password"); this.add(l7);
+        l8 = new JLabel("Scan and Pay"); this.add(l8);
+    
+        l4.setForeground(new Color(0,0,0));     
+        l5.setForeground(new Color(0,0,0));
+        l6.setForeground(new Color(0,0,0));     
+        l7.setForeground(new Color(0,0,0));
+        l8.setForeground(new Color(0,0,0));
+
+        ic = new ImageIcon("qrcode.jpg");
+        Image im = ic.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
+        ImageIcon ic1 = new ImageIcon(im);
+        l9 = new JLabel(ic1); this.add(l9);
+
+        l1.setBounds(100,25,300,30);
+        l2.setBounds(50,70,200,30);
+        l3.setBounds(100,100,80,30);
+
+        rb1.setBounds(80,130,100,30);
+        rb2.setBounds(80,170,100,30);
+        rb3.setBounds(80,210,100,30);
+        rb4.setBounds(80,250,100,30);
+        rb5.setBounds(80,290,100,30);
+
+        b1.setBounds(80,330,100,30);b1.setForeground(new Color(0,0,0));b1.setBackground(new Color(5,126,7));
+        back = new JButton("Previous");back.addActionListener(this);back.setBackground(new Color(211, 18, 6));this.add(back);
+        back.setBounds(200,330,100,30);back.setForeground(new Color(0,0,0));
+        this.setLocationRelativeTo(null);
+    }
+    public void itemStateChanged(ItemEvent ie){
+        if(rb1.isSelected()){
+            revalidate();   repaint();
+            this.remove(l4);    this.remove(l5);    this.remove(l6);    this.remove(l7);    this.remove(l8);    this.remove(l9);
+            this.remove(tf1);   this.remove(tf2);
+
+            rb1.setBounds(80,130,100,30);
+            rb2.setBounds(80,170,100,30);
+            rb3.setBounds(80,210,100,30);
+            rb4.setBounds(80,250,100,30);
+            rb5.setBounds(80,290,100,30);
+
+            b1.setBounds(80,330,100,30);
+            back.setBounds(200,330,100,30);
+        }else if(rb2.isSelected()){
+            revalidate();   repaint();
+            this.remove(l6);    this.remove(l7);    this.remove(l8);    this.remove(l9);
+            this.add(l4);       this.add(l5);       this.add(tf1);      this.add(tf2);
+
+            rb1.setBounds(80,130,100,30);
+            rb2.setBounds(80,170,100,30);
+                l4.setBounds(100,210,150,30); tf1.setBounds(250,210,150,30);
+                l5.setBounds(100,250,150,30); tf2.setBounds(250,250,150,30);
+            rb3.setBounds(80,290,100,30);
+            rb4.setBounds(80,330,100,30);
+            rb5.setBounds(80,370,100,30);
+
+            b1.setBounds(80,420,100,30);
+            back.setBounds(200,420,100,30);
+        }
+        else if(rb3.isSelected()){
+            revalidate();   repaint();
+            this.remove(l6);    this.remove(l7);    this.remove(l8);    this.remove(l9);
+            this.add(l4);       this.add(l5);       this.add(tf1);      this.add(tf2);
+            
+            rb1.setBounds(80,130,100,30);
+            rb2.setBounds(80,170,100,30);
+            rb3.setBounds(80,210,100,30);
+                l4.setBounds(100,250,150,30); tf1.setBounds(250,250,150,30);
+                l5.setBounds(100,290,150,30); tf2.setBounds(250,290,150,30);
+            rb4.setBounds(80,330,100,30);
+            rb5.setBounds(80,370,100,30);
+
+            b1.setBounds(80,420,100,30);
+            back.setBounds(200,420,100,30);
+        }
+        else if(rb4.isSelected()){
+            revalidate();   repaint();
+            this.remove(l4);    this.remove(l5);    this.remove(l8);    this.remove(l9);
+            this.add(l6);       this.add(l7);       this.add(tf1);      this.add(tf2);
+            
+            rb1.setBounds(80,130,100,30);
+            rb2.setBounds(80,170,100,30);
+            rb3.setBounds(80,210,100,30);
+            rb4.setBounds(80,250,100,30);
+                l6.setBounds(100,290,150,30); tf1.setBounds(250,290,150,30);
+                l7.setBounds(100,330,150,30); tf2.setBounds(250,330,150,30);
+            rb5.setBounds(80,370,100,30);
+
+            b1.setBounds(80,420,100,30);
+            back.setBounds(200,420,100,30);
+        }
+        else if(rb5.isSelected()){
+            revalidate();   repaint();
+            this.remove(l4);    this.remove(l5);    this.remove(l6);    this.remove(l7);    this.remove(tf1);   this.remove(tf2);
+            this.add(l8);       this.add(l9);
+            
+            rb1.setBounds(80,130,100,30);
+            rb2.setBounds(80,170,100,30);
+            rb3.setBounds(80,210,100,30);
+            rb4.setBounds(80,250,100,30);
+            rb5.setBounds(80,290,100,30);
+                l8.setBounds(100,330,200,30);
+                l9.setBounds(125,370,100,100);
+
+            b1.setBounds(80,480,100,30);
+            back.setBounds(200,480,100,30);
+        }
+    }
+    public void actionPerformed(ActionEvent ae){
+        if(ae.getSource() == b1){
+            if(rb1.isSelected() || rb2.isSelected() || rb3.isSelected() || rb4.isSelected() || rb5.isSelected()){
+                JOptionPane.showMessageDialog(null,"Payment Successfully & Order Confirmed !!");
+            }else{
+                JOptionPane.showMessageDialog(null, "Please select any payment method !","Payment",JOptionPane.WARNING_MESSAGE);
+            }
+        }else if(ae.getSource() == back){
+            cart ct = new cart();
+            ct.setVisible(true);
+            this.dispose();
+        }
+    }
+}
+
+
+account.java
+
+
+import javax.swing.*;
+import java.awt.*;;
+import java.sql.*;
+
+public class account extends JFrame{
+    JLabel l1;
+    JTextArea ta1;
+    String fname,lname,email,mob,uname,pword;
+    account(){
+        this.setTitle("Account Details");
+        this.setSize(700,700);
+        this.setLayout(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        Font ft = new Font("serif",Font.ITALIC,12); Font ft1 = new Font("Algerian",Font.ITALIC,25);
+        this.getContentPane().setBackground(new Color(0, 250, 154));
+
+        l1 = new JLabel("Account Details");l1.setFont(ft1);this.add(l1);l1.setForeground(new Color(75, 0, 130));l1.setBounds(250,15,300,30);
+
+        ta1 = new JTextArea(50,50);ta1.setFont(ft);ta1.setBounds(50,50,600,400);
+        this.add(ta1);
+        this.setLocationRelativeTo(null);
+        try{
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            Connection con = DriverManager.getConnection("jdbc:ucanaccess://C://Users//ADMIN//Desktop//sweetshop//sssm.accdb");
+            PreparedStatement ps = con.prepareStatement("select * from account");
+            ResultSet rs = ps.executeQuery();
+            ta1.append("First Name" + "\t\t" + "Last Name" + "\t" + "Email Id" + "\t\t" + "Mobile No" + "\t\t" + "Username" + "\t" + "Password\n");
+            while (rs.next()){
+                fname = rs.getString(1);lname = rs.getString(2);email = rs.getString(3);mob = rs.getString(4);
+                uname = rs.getString(5);pword = rs.getString(6);
+                ta1.append(fname + "\t\t" + lname + "\t" + email + "\t" + mob + "\t" + uname + "\t" + pword + "\n");
+            }
+        }
+        catch (ClassNotFoundException cnfex){
+            System.out.println(cnfex);
+        }
+        catch(SQLException sqe){
+            System.out.println(sqe);
+        }
+    }
+}
